@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { baseurl } from "../../utils/Api_integration";
+import Swal from 'sweetalert2';
 
 const UserRegister = ({ handleUserLogin }) => {
   const [name, setname] = useState("");
