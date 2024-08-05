@@ -19,7 +19,13 @@ const UserLogin = ({ handleTodolist }) => {
     const data = await response.json();
     if (response.ok) {
       console.log(data, "data");
-      alert("Login is successfull");
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "You have Logged in successfully",
+        showConfirmButton: false,
+        timer: 1500
+      });
       localStorage.setItem("loginToken", data.token);
       localStorage.setItem("userId", data.userId);
       localStorage.setItem("email", data.email);

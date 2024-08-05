@@ -55,9 +55,11 @@ const Todolist = () => {
         settext("");
         // alert("todolist is deleted successfully");
         Swal.fire({
-          icon: 'success',
+          position: "top-end",
           title: 'Deleted!',
           text: 'Todo list is deleted successfully',
+          showConfirmButton: false,
+          timer: 1500
         });
       } else {
         alert("response is not ok");

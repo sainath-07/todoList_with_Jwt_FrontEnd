@@ -23,7 +23,13 @@ const UserRegister = ({ handleUserLogin }) => {
       const data = await response.json();
       if (response.ok) {
         console.log(data, "data");
-        alert("signup is successfull");
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "SignUp is successfully, Now you can login",
+          showConfirmButton: false,
+          timer: 1500
+        });
         handleUserLogin(true);
         setname("");
         setemail("");
