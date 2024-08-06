@@ -93,7 +93,7 @@ const Todolist = () => {
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: 400,
                 fontStyle: "normal",
-              }}>{text}</p>
+              }}>{index+1}. {text}</p>
                 <div className="flex gap-3 justify-start">
                   <button
                     className="bg-green-500  font-semibold text-white px-2 py-2 flex items-center h-8 rounded"

@@ -8,6 +8,12 @@ const UserLogin = ({ handleTodolist }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if (email == false || email == "" || password == false || password == "") {
+      alert("please fill all fiels to login");
+      return;
+    }
+
     const response = await fetch(`${baseurl}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -18,6 +24,7 @@ const UserLogin = ({ handleTodolist }) => {
     });
 
     const data = await response.json();
+    console.log(data, "data");
     if (response.ok) {
       console.log(data, "data");
       Swal.fire({
@@ -33,8 +40,8 @@ const UserLogin = ({ handleTodolist }) => {
       handleTodolist();
       setemail("");
       setpassword("");
-    } else {
-      alert("Something went wrong try-again");
+    } else if (data.error == "Invalid Email or Password") {
+      alert(data.error);
     }
   };
 
@@ -83,9 +90,14 @@ const UserLogin = ({ handleTodolist }) => {
           />
         </div>
         <div className="text-center mt-4">
-          <button type="submit" className="bg-blue-600 text-white p-2 px-4 text-xl rounded border border-none" style={{
-            Poppins,
-            boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}}>
+          <button
+            type="submit"
+            className="bg-blue-600 text-white p-2 px-4 text-xl rounded border border-none"
+            style={{
+              Poppins,
+              boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+            }}
+          >
             Submit
           </button>
         </div>

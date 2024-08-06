@@ -11,6 +11,17 @@ const UserRegister = ({ handleUserLogin }) => {
     e.preventDefault();
 
     try {
+      if (
+        name == "" ||
+        name == false ||
+        email == "" ||
+        email == false ||
+        password == false ||
+        password == ""
+      ) {
+        alert("please fill all fields to register");
+        return;
+      }
       const response = await fetch(`${baseurl}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,13 +63,16 @@ const UserRegister = ({ handleUserLogin }) => {
   return (
     <div className="h-[70vh]">
       <form action="" onSubmit={handleRegister}>
-        <h1 className="text-center mt-6 text-2xl"
-         style={{
-          fontFamily: "Poppins, sans-serif",
-          fontWeight: 600,
-          fontStyle: "normal",
-        }}
-        >User Signup form</h1>
+        <h1
+          className="text-center mt-6 text-2xl"
+          style={{
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 600,
+            fontStyle: "normal",
+          }}
+        >
+          User Signup form
+        </h1>
         <div
           className="flex flex-col w-1/2 gap-4
           items-center mx-auto justify-start mt-5

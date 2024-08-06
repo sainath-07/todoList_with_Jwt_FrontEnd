@@ -4,6 +4,7 @@ import UserRegister from "../components/userDetails/UserRegister";
 import UserLogin from "../components/userDetails/UserLogin";
 import Todolist from "../Todolist";
 import Swal from "sweetalert2";
+import img from "./todoimage.jpg";
 
 let initialvalue = {
   showUserRegister: false,
@@ -123,6 +124,18 @@ const NavigationPage = () => {
       )}
 
       {currentstate.showtodoList && <Todolist />}
+
+      {currentstate.showUserRegister ||
+      currentstate.showUserLogin ||
+      currentstate.showtodoList ? (
+        ""
+      ) : (
+        <>
+          <div className="flex  justify-center  items-center h-[90vh]">
+            <img src={img} alt="" className=" h-[80%] rounded" style={{boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"}} />
+          </div>
+        </>
+      )}
     </div>
   );
 };
