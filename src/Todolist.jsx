@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { baseurl } from "./utils/Api_integration";
-import Swal from 'sweetalert2';
-
+import {
+  getUserTodos,
+  deleteTodos,
+  updateTodos,
+  addTodos,
+} from "./utils/Api_integration";
 
 const Todolist = () => {
   const [text, settext] = useState("");
@@ -10,116 +13,8 @@ const Todolist = () => {
   const [todoId, setTodoId] = useState("");
 
   useEffect(() => {
-    getUserTodos();
+    getUserTodos(settodo);
   }, []);
-
-  const userToken = localStorage.getItem("loginToken");
-
-  //  Getalltodos
-  const getUserTodos = async () => {
-    try {
-      let response = await fetch(`${baseurl}/todos`, {
-        method: "GET",
-        headers: {
-          token: `${userToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      let data = await response.json();
-      if (response.ok) {
-        console.log(data);
-        settodo(data.todo);
-        settext("");
-      } else {
-        alert("response is not ok");
-      }
-    } catch (error) {
-      console.log(error, "error");
-      alert("Something went wrong , can't fetch all todos");
-    }
-  };
-
-  // delete todo
-  const deleteTodos = async (todoId) => {
-    try {
-      const response = await fetch(`${baseurl}/todos/${todoId}`, {
-        method: "DELETE",
-        headers: {
-          token: `${userToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        getUserTodos();
-        settext("");
-        // alert("todolist is deleted successfully");
-        Swal.fire({
-          position: "top-end",
-          title: 'Deleted!',
-          text: 'Todo list is deleted successfully',
-          showConfirmButton: false,
-          timer: 1500
-        });
-      } else {
-        alert("response is not ok");
-      }
-    } catch (error) {
-      console.log(error, "error");
-      alert("Something went wrong , todolist is not deleted");
-    }
-  };
-
-  // udpateTodos
-  const updateTodos = async () => {
-    console.log(todoId, text);
-    try {
-      const response = await fetch(`${baseurl}/todos/${todoId}`, {
-        method: "PUT",
-        headers: {
-          token: `${userToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ todoId, text }),
-      });
-      if (response.ok) {
-        settoggle(false);
-        getUserTodos();
-        settext("");
-        alert("todo updated successfully");
-      } else {
-        alert("response is not ok");
-      }
-    } catch (error) {
-      console.log(error, "error");
-      alert("Something went wrong couldnot update todolist");
-    }
-  };
-
-  // Add Todo
-  const addTodos = async () => {
-    try {
-      const response = await fetch(`${baseurl}/todos`, {
-        method: "POST",
-        headers: {
-          token: `${userToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text }),
-      });
-
-      if (response.ok) {
-        settext("");
-        getUserTodos();
-        alert("todo added successfull");
-      } else {
-        alert("response is not ok");
-      }
-    } catch (error) {
-      console.log(error, "error");
-      alert("some thing went wrong , could not add the todolist");
-    }
-  };
 
   const newUpdatedTodo = (todoId, todotext) => {
     settoggle(true);
@@ -137,22 +32,39 @@ const Todolist = () => {
             autoComplete="off"
             value={text}
             onChange={(e) => settext(e.target.value)}
-            className="border-1 rounded border-gray-400 w-full h-12 pl-2 text-2xl font-mono "
-            placeholder="Enter the Todo's... "
+            className="border-1 rounded border-gray-400 w-full h-12 pl-6 text-2xl  "
+            style={{
+              fontFamily: "Poppins, sans-serif",
+              fontWeight: 400,
+              fontStyle: "normal",
+            }}
+            placeholder="Enter the Todo's "
           />
         </div>
         <div className="flex justify-center items-center">
           {toggle ? (
             <button
-              onClick={updateTodos}
+              onClick={() =>
+                updateTodos(todoId, text, settoggle, settext, settodo)
+              }
               className="bg-black text-white ml-2 p-2 text-xl rounded "
+              style={{
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: 600,
+                fontStyle: "normal",
+              }}
             >
               updateTodo
             </button>
           ) : (
             <button
-              onClick={addTodos}
+              onClick={() => addTodos(text, settext, settodo)}
               className="bg-black text-white ml-2 p-2 text-xl rounded "
+              style={{
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: 600,
+                fontStyle: "normal",
+              }}
             >
               Add Todo
             </button>
@@ -160,7 +72,14 @@ const Todolist = () => {
         </div>
       </div>
 
-      <div className="text-center text-xl font-semibold mt-8">
+      <div
+        className="text-center text-2xl font-semibold mt-8"
+        style={{
+          fontFamily: "Poppins, sans-serif",
+          fontWeight: 400,
+          fontStyle: "normal",
+        }}
+      >
         TodoList items
       </div>
 
@@ -169,18 +88,32 @@ const Todolist = () => {
           const { text } = ele;
           return (
             <React.Fragment key={index}>
-              <div className="flex border-1 border-gray-400 w-1/2 rounded mt-2 justify-between p-2">
-                <p>{text}</p>
+              <div className="flex border-1 border-gray-300 w-1/2 rounded mt-2 justify-between p-2">
+                <p  className="text-2xl" style={{
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: 400,
+                fontStyle: "normal",
+              }}>{text}</p>
                 <div className="flex gap-3 justify-start">
                   <button
-                    className="bg-green-400 font-semibold text-black px-2 h-8 rounded"
+                    className="bg-green-500  font-semibold text-white px-2 py-2 flex items-center h-8 rounded"
+                    style={{
+                      fontFamily: "Poppins, sans-serif",
+                      fontWeight: 600,
+                      fontStyle: "normal",
+                    }}
                     onClick={() => newUpdatedTodo(ele._id, ele.text)}
                   >
                     update
                   </button>
                   <button
-                    className="bg-red-500  font-semibold text-white px-2 h-8 rounded"
-                    onClick={() => deleteTodos(ele._id)}
+                    className="bg-red-500  font-semibold text-white px-2 py-2 flex items-center h-8 rounded"
+                    onClick={() => deleteTodos(ele._id, settext, settodo)}
+                    style={{
+                      fontFamily: "Poppins, sans-serif",
+                      fontWeight: 600,
+                      fontStyle: "normal",
+                    }}
                   >
                     delete
                   </button>

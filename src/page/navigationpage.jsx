@@ -3,6 +3,7 @@ import Navbar from "../components/navbar";
 import UserRegister from "../components/userDetails/UserRegister";
 import UserLogin from "../components/userDetails/UserLogin";
 import Todolist from "../Todolist";
+import Swal from "sweetalert2";
 
 let initialvalue = {
   showUserRegister: false,
@@ -73,11 +74,36 @@ const NavigationPage = () => {
   };
 
   const handleuserlogout = () => {
-    if (window.confirm("Are you sure do you want to logout...?")) {
-      setuserLogout(false);
-      localStorage.clear();
-      window.location.reload();
-    }
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "Do you Want to logout......!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, logout!",
+        margin: "10px",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire({
+            title: "success!",
+            text: "Logout is successfully",
+            icon: "success",
+          });
+          setuserLogout(false);
+          localStorage.clear();
+          window.location.reload();
+        }
+      });
   };
 
   return (
